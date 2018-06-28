@@ -55,7 +55,40 @@ class Solution:
             current_node.next = ListNode(1)
         return result
 
+    def oddEvenList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        count = 2
+        if head is None or head.next is None:
+            return head
+        odd_head = head
+        odd_temp = odd_head
+        even_head = head.next
+        even_temp = even_head
+        head = head.next
+        even_count = 0
+        while head.next is not None:
+            head = head.next
+            count += 1
+            if count % 2 == 0:
+                even_count += 1
+                even_temp.next = head
+                even_temp = even_temp.next
+            else:
+                odd_temp.next = head
+                odd_temp = odd_temp.next
+        even_temp.next = None
+        odd_temp.next = even_head
+        return odd_head
+
 
 if __name__ == "__main__":
-    nums = [5, 1, 5, 5, 2, 5, 4]
-    print(Solution().addTwoNumbers(nums))
+    head = ListNode(1)
+    head.next = ListNode(2)
+    head.next.next = ListNode(3)
+    head.next.next.next = ListNode(4)
+    head.next.next.next.next = ListNode(5)
+
+    print(Solution().oddEvenList(head))
