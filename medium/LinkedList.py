@@ -83,6 +83,41 @@ class Solution:
         odd_temp.next = even_head
         return odd_head
 
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        """
+        if headA is None or headB is None:
+            return None
+        temp_head_a = headA
+        length_a = 0
+        temp_head_b = headB
+        length_b = 0
+        while temp_head_a.next is not None:
+            temp_head_a = temp_head_a.next
+            length_a += 1
+        while temp_head_b.next is not None:
+            temp_head_b = temp_head_b.next
+            length_b += 1
+        if temp_head_a is not temp_head_b:
+            return None
+        if length_a > length_b:
+            step = length_a - length_b
+            for i in range(step):
+                headA = headA.next
+            while headA is not headB:
+                headA = headA.next
+                headB = headB.next
+        else:
+            step = length_b - length_a
+            for i in range(step):
+                headB = headB.next
+            while headA is not headB:
+                headA = headA.next
+                headB = headB.next
+        return headA
+
 
 if __name__ == "__main__":
     head = ListNode(1)
