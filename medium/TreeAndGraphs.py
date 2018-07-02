@@ -71,15 +71,31 @@ class Solution:
                 break
         return result
 
+    def buildTree(self, preorder, inorder):
+        """
+        :type preorder: List[int]
+        :type inorder: List[int]
+        :rtype: TreeNode
+        """
+        if len(preorder) == 0:
+            return None
+        return self.helper(preorder, 0, len(preorder) - 1, inorder, 0, len(inorder) - 1)
+
+    def helper(self, preorder, s1, e1, inorder, s2, e2):
+        val = preorder[s1]
+        if s1 >= e1:
+            return TreeNode(val)
+        index = inorder.index(val, s2, e2 + 1)
+        node = TreeNode(val)
+        if index != s2:
+            node.left = self.helper(preorder, s1 + 1, s1 + index - s2, inorder, s2, index - 1)
+        if index != e2:
+            node.right = self.helper(preorder, s1 + index - s2 + 1, e1, inorder, index + 1, e2)
+        return node
+
 
 if __name__ == "__main__":
-    root = TreeNode(1)
-    root.left = TreeNode(2)
-    root.right = TreeNode(3)
-    root.left.left = TreeNode(4)
-    # root.left.right = TreeNode(7)
-    # root.right.left = TreeNode(15)
-    root.right.right = TreeNode(5)
-    # root.right.right = TreeNode(1)
-
-    print(Solution().zigzagLevelOrder(root))
+    preorder = [1, 2]
+    inorder = [2, 1]
+    solution = Solution()
+    print(solution.zigzagLevelOrder(solution.buildTree(preorder, inorder)))
