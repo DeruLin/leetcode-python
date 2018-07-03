@@ -5,6 +5,14 @@ class TreeNode:
         self.right = None
 
 
+class TreeLinkNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+        self.next = None
+
+
 class Solution:
     def inorderTraversal(self, root):
         """
@@ -93,9 +101,24 @@ class Solution:
             node.right = self.helper(preorder, s1 + index - s2 + 1, e1, inorder, index + 1, e2)
         return node
 
+    def connect(self, root):
+        while root and root.left:
+            next_level_node = root.left
+            root.left.next = root.right
+            while root.next:
+                root.right.next = root.next.left
+                root = root.next
+                root.left.next = root.right
+            root = next_level_node
+
 
 if __name__ == "__main__":
-    preorder = [1, 2]
-    inorder = [2, 1]
+    root = TreeLinkNode(0)
+    root.left = TreeLinkNode(1)
+    root.right = TreeLinkNode(2)
+    root.left.left = TreeLinkNode(3)
+    root.left.right = TreeLinkNode(4)
+    root.right.left = TreeLinkNode(5)
+    root.right.right = TreeLinkNode(6)
     solution = Solution()
-    print(solution.zigzagLevelOrder(solution.buildTree(preorder, inorder)))
+    print(solution.connect(root))
