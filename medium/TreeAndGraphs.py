@@ -14,6 +14,7 @@ class TreeLinkNode:
 
 
 class Solution:
+
     def inorderTraversal(self, root):
         """
         :type root: TreeNode
@@ -110,6 +111,35 @@ class Solution:
                 root = root.next
                 root.left.next = root.right
             root = next_level_node
+
+    def kthSmallest(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: int
+        """
+        stack = []
+        count = 0
+        if root is None:
+            return 0
+        stack.append(root)
+        while len(stack) > 0:
+            node = stack.pop()
+            if node.left is not None:
+                stack.append(node)
+                stack.append(node.left)
+                node.left = None
+            elif node.right is not None:
+                count += 1
+                if count == k:
+                    return node.val
+                stack.append(node.right)
+                node.right = None
+            else:
+                count += 1
+                if count == k:
+                    return node.val
+        return 0
 
 
 if __name__ == "__main__":
