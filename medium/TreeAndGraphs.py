@@ -141,14 +141,39 @@ class Solution:
                     return node.val
         return 0
 
+    def numIslands(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        row_len = len(grid)
+        if row_len == 0:
+            return 0
+        col_len = len(grid[0])
+        visited = [[False for i in range(col_len)] for i in range(row_len)]
+        islands_count = 0
+        for i in range(row_len):
+            for j in range(col_len):
+                if grid[i][j] == "1" and not visited[i][j]:
+                    islands_count += 1
+                    self.visit(grid, i, j, visited)
+        return islands_count
+
+    def visit(self, grid, i, j, visited):
+        visited[i][j] = True
+        row_len = len(grid)
+        col_len = len(grid[0])
+        if i - 1 >= 0 and not visited[i - 1][j] and grid[i - 1][j] == "1":
+            self.visit(grid, i - 1, j, visited)
+        if i + 1 < row_len and not visited[i + 1][j] and grid[i + 1][j] == "1":
+            self.visit(grid, i + 1, j, visited)
+        if j - 1 >= 0 and not visited[i][j - 1] and grid[i][j - 1] == "1":
+            self.visit(grid, i, j - 1, visited)
+        if j + 1 < col_len and not visited[i][j + 1] and grid[i][j + 1] == "1":
+            self.visit(grid, i, j + 1, visited)
+
 
 if __name__ == "__main__":
-    root = TreeLinkNode(0)
-    root.left = TreeLinkNode(1)
-    root.right = TreeLinkNode(2)
-    root.left.left = TreeLinkNode(3)
-    root.left.right = TreeLinkNode(4)
-    root.right.left = TreeLinkNode(5)
-    root.right.right = TreeLinkNode(6)
     solution = Solution()
-    print(solution.connect(root))
+    print(solution.numIslands(
+        [["1", "1", "0", "0", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "1", "0", "0"], ["0", "0", "0", "1", "1"]]))
