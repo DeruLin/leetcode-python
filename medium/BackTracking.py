@@ -30,7 +30,33 @@ class Solution:
                 result.append(letter)
         return result
 
+    def generateParenthesis(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        if n == 0:
+            return []
+        elif n == 1:
+            return ["()"]
+        else:
+            return list(self.generate(1, n))
+
+    def generate(self, count, n):
+        temp_set = set()
+        if count == n:
+            temp_set.add("()")
+            return temp_set
+        else:
+            pre_set = self.generate(count + 1, n)
+            for s in pre_set:
+                for i in range(len(s) + 1):
+                    s_list = list(s)
+                    s_list.insert(i, "()")
+                    temp_set.add("".join(s_list))
+        return temp_set
+
 
 if __name__ == "__main__":
     solution = Solution()
-    print(solution.letterCombinations("23"))
+    print(solution.generateParenthesis(3))
