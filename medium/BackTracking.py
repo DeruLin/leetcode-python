@@ -56,7 +56,25 @@ class Solution:
                     temp_set.add("".join(s_list))
         return temp_set
 
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if len(nums) == 1:
+            return [[nums[0]]]
+        else:
+            result = []
+            for num in nums:
+                nums_copy = nums.copy()
+                nums_copy.remove(num)
+                sub_permute = self.permute(nums_copy)
+                for permute in sub_permute:
+                    permute.append(num)
+                    result.append(permute)
+            return result
+
 
 if __name__ == "__main__":
     solution = Solution()
-    print(solution.generateParenthesis(3))
+    print(solution.permute([1, 2, 3]))
