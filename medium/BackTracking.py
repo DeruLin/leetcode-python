@@ -74,7 +74,26 @@ class Solution:
                     result.append(permute)
             return result
 
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        return self.get_subset(len(nums), nums)
+
+    def get_subset(self, n, nums):
+        if n == 1:
+            return [[i] for i in nums]
+        else:
+            temp_set = set()
+            pre_set = self.get_subset(n - 1, nums)
+            for num in nums:
+                for pre_list in pre_set:
+                    temp_list = pre_list.copy()
+                    temp_set.add(temp_list.append(num))
+            return temp_set
+
 
 if __name__ == "__main__":
     solution = Solution()
-    print(solution.permute([1, 2, 3]))
+    print(solution.subsets([1, 2, 3]))
