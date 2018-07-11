@@ -1,4 +1,5 @@
 class Solution:
+
     def letterCombinations(self, digits):
         """
         :type digits: str
@@ -79,19 +80,23 @@ class Solution:
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-        return self.get_subset(len(nums), nums)
+        length = len(nums)
+        result = [[]]
+        result.extend([[i] for i in nums])
+        for i in range(2, length + 1):
+            result.extend(self.get_subset(i, nums))
+        return result
 
     def get_subset(self, n, nums):
         if n == 1:
             return [[i] for i in nums]
         else:
-            temp_set = set()
-            pre_set = self.get_subset(n - 1, nums)
-            for num in nums:
-                for pre_list in pre_set:
-                    temp_list = pre_list.copy()
-                    temp_set.add(temp_list.append(num))
-            return temp_set
+            result = []
+            for i in range(len(nums) - 1):
+                for temp_set in self.get_subset(n - 1, nums[i + 1:len(nums)]):
+                    temp_set.append(nums[i])
+                    result.append(temp_set)
+            return result
 
 
 if __name__ == "__main__":
