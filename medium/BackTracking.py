@@ -98,7 +98,58 @@ class Solution:
                     result.append(temp_set)
             return result
 
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        if len(word) == 0:
+            return False
+        row_len = len(board)
+        if row_len == 0:
+            return 0
+        col_len = len(board[0])
+        letter = word[0]
+        indexes = []
+        for i in range(row_len):
+            for j in range(col_len):
+                if letter == board[i][j]:
+                    indexes.append((i, j))
+        result = False
+        for index in indexes:
+            result = result or self.visit(index, word[1:len(word)], board)
+            if result:
+                return True
+        return False
+
+    def visit(self, pre_index, word, board):
+        if len(word) == 0:
+            return True
+        else:
+            letter = word[0]
+            i = pre_index[0]
+            j = pre_index[1]
+            tmp = board[i][j]  # first character is found, check the remaining part
+            board[i][j] = "#"  # avoid visit agian
+            row_len = len(board)
+            col_len = len(board[0])
+            if j + 1 < col_len and board[i][j + 1] == letter \
+                    and self.visit((i, j + 1), word[1:], board):
+                return True
+            if i + 1 < row_len and board[i + 1][j] == letter \
+                    and self.visit((i + 1, j), word[1:], board):
+                return True
+            if i - 1 >= 0 and board[i - 1][j] == letter \
+                    and self.visit((i - 1, j), word[1:], board):
+                return True
+            if j - 1 >= 0 and board[i][j - 1] == letter \
+                    and self.visit((i, j - 1), word[1:], board):
+                return True
+            board[i][j] = tmp
+            return False
+
 
 if __name__ == "__main__":
     solution = Solution()
-    print(solution.subsets([1, 2, 3]))
+    print(solution.exist([["a", "b"]], "ba"))
