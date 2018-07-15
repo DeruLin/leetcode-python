@@ -20,7 +20,27 @@ class Solution:
             else:
                 x += 1
 
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        map = {}
+        for num in nums:
+            temp = map.get(num, 0)
+            map[num] = temp + 1
+        sort_map = sorted(map.items(), key=lambda item: item[1], reverse=True)
+        result = []
+        count = 0
+        for l in sort_map:
+            if count >= k:
+                break
+            result.append(l[0])
+            count += 1
+        return result
+
 
 if __name__ == "__main__":
     solution = Solution()
-    print(solution.sortColors([0, 2, 1]))
+    print(solution.topKFrequent([4, 1, -1, 2, -1, 2, 3], 2))
